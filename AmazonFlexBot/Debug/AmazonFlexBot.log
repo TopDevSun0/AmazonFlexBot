@@ -1,0 +1,7 @@
+﻿  AmazonFlexBot.cpp
+AmazonFlexBot.obj : error LNK2019: unresolved external symbol "public: __thiscall cv::Mat::~Mat(void)" (??1Mat@cv@@QAE@XZ) referenced in function _main
+AmazonFlexBot.obj : error LNK2019: unresolved external symbol "class cv::Mat __cdecl cv::imread(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,int)" (?imread@cv@@YA?AVMat@1@ABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H@Z) referenced in function _main
+AmazonFlexBot.obj : error LNK2019: unresolved external symbol "int __cdecl cv::waitKey(int)" (?waitKey@cv@@YAHH@Z) referenced in function _main
+AmazonFlexBot.obj : error LNK2019: unresolved external symbol "void __cdecl cv::imshow(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,class cv::debug_build_guard::_InputArray const &)" (?imshow@cv@@YAXABV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@ABV_InputArray@debug_build_guard@1@@Z) referenced in function _main
+D:\opencv\build\x64\vc15\lib\opencv_world460d.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\Debug\AmazonFlexBot.exe : fatal error LNK1120: 4 unresolved externals

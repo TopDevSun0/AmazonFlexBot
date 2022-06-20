@@ -1,0 +1,3 @@
+﻿  AmazonFlexBot.cpp
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(224,50): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  AmazonFlexBot.vcxproj -> C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\x64\Debug\AmazonFlexBot.exe
