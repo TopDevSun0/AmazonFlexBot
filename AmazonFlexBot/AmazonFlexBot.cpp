@@ -9,20 +9,19 @@
 #include <Windows.h>
 #include <vector>
 
-using namespace std;
+//using namespace std;
 
 
 
 // global variables ///////////////////////////////////////////////////////////////////////////////
 const int MIN_CONTOUR_AREA = 5;
-
 const int RESIZED_IMAGE_WIDTH = 20;
 const int RESIZED_IMAGE_HEIGHT = 30;
 
 void getMousePos() {
     POINT c;
     GetCursorPos(&c);
-    cout << c.x << " " << c.y << endl;
+    std::cout << c.x << " " << c.y << std::endl;
     Sleep(200);
 }
 
@@ -175,14 +174,11 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
                                                                                 // even though in reality they are multiple images / numbers
     kNearest->train(matTrainingImagesAsFlattenedFloats, cv::ml::ROW_SAMPLE, matClassificationInts);
 
-    // test ///////////////////////////////////////////////////////////////////////////////
-
- //   cv::Mat matTestingNumbers = cv::imread("75.png");            // read in the test numbers image
-
-    if (matTestingNumbers.empty()) {                                // if unable to open image
-        std::cout << "error: image not read from file\n\n";         // show error message on command line
-        return -1;                                                  // and exit program
-    }
+    // cv::Mat matTestingNumbers = cv::imread("75.png");            // read in the test numbers image
+    //if (matTestingNumbers.empty()) {                                // if unable to open image
+    //    std::cout << "error: image not read from file\n\n";         // show error message on command line
+    //    return -1;                                                  // and exit program
+    //}
 
     cv::Mat matGrayscale;           //
     cv::Mat matBlurred;             // declare more image variables
@@ -206,12 +202,12 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
         3,                                   // size of a pixel neighborhood used to calculate threshold value
         2);                                   // constant subtracted from the mean or weighted mean
 
-    matThreshCopy = matThresh.clone();              // make a copy of the thresh image, this in necessary b/c findContours modifies the image
+    // matThreshCopy = matThresh.clone();              // make a copy of the thresh image, this in necessary b/c findContours modifies the image
 
     std::vector<std::vector<cv::Point> > ptContours;        // declare a vector for the contours
     std::vector<cv::Vec4i> v4iHierarchy;                    // declare a vector for the hierarchy (we won't use this in this program but this may be helpful for reference)
 
-    cv::findContours(matThreshCopy,             // input image, make sure to use a copy since the function will modify this image in the course of finding contours
+    cv::findContours(matThresh,             // input image, make sure to use a copy since the function will modify this image in the course of finding contours
         ptContours,                             // output contours
         v4iHierarchy,                           // output hierarchy
         cv::RETR_EXTERNAL,                      // retrieve the outermost contours only
@@ -263,7 +259,14 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
     }
     float price = 0;
     try {
-        price = stof(strFinalString.substr(2, strFinalString.length()));
+        if (strFinalString.length() < 4)
+            price = 0;
+        else if (strFinalString[1] == '$')
+            price = stof(strFinalString.substr(2, strFinalString.length()));
+        else if (strFinalString[2] == '$')
+            price = stof(strFinalString.substr(3, strFinalString.length()));
+        else
+            price = 0;
     }
     catch(...){
         price = 0;
@@ -272,7 +275,7 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
     //if (price > 150) {
     //    cout << "\n\ntarget price " << price << endl;
     //}
-    std::cout << "numbers read = " << strFinalString << "\n\n";       // show the full string
+    std::cout << "Price read = " << "$" << price << "\n\n";       // show the full string
 
 
     //cv::imshow("matTestingNumbers", matTestingNumbers);     // show input image with green boxes drawn around found digits
@@ -283,8 +286,8 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
 
 
 cv::Mat getwindow(HWND hWND, int y) {
-    HRGN hRGN = CreateRectRgn(683, 284, 768, 1313);
-    //HDC windowHandler = GetDCEx(hWND, hRGN, DCX_WINDOW);
+    // HRGN hRGN = CreateRectRgn(683, 284, 768, 1313);
+    // HDC windowHandler = GetDCEx(hWND, hRGN, DCX_WINDOW);
     HDC windowHandler = GetDC(hWND);
     HDC memoryDevice = CreateCompatibleDC(windowHandler);
     RECT windowRect;
@@ -296,7 +299,8 @@ cv::Mat getwindow(HWND hWND, int y) {
     HBITMAP bitmap = CreateCompatibleBitmap(windowHandler, width, height);
     SelectObject(memoryDevice, bitmap);
     // bitblock of price range only
-    BitBlt(memoryDevice, 0, 0, 100, 50, windowHandler, 660, 280+y, SRCCOPY);
+    // BitBlt(memoryDevice, 0, 0, 100, 50, windowHandler, 660, 300+y, SRCCOPY);
+    BitBlt(memoryDevice, 0, 0, 100, 90, windowHandler, width*0.8271, height*0.21552 + y, SRCCOPY);
     BITMAPINFOHEADER bi;
     bi.biSize = sizeof(BITMAPINFOHEADER);
     bi.biWidth = width;
@@ -314,22 +318,34 @@ cv::Mat getwindow(HWND hWND, int y) {
     GetDIBits(windowHandler, bitmap, 0, height, mat.data, (BITMAPINFO*)&bi, DIB_RGB_COLORS);
     DeleteObject(bitmap);
     DeleteDC(memoryDevice);
-    DeleteObject(hRGN);
+    // DeleteObject(hRGN);
     ReleaseDC(hWND, windowHandler);
+   
     return mat;
 }
 
 void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlattenedFloats) {
     LPCWSTR windowTitle = L"BlueStacks App Player";
     HWND hWND = FindWindow(NULL, windowTitle);
+    RECT windowRect;
+    GetWindowRect(hWND, &windowRect);
+    int height = windowRect.bottom; 
+    int width = windowRect.right;   
     // cv::namedWindow("AmazonFlex", cv::WINDOW_NORMAL);
     while (!hWND) {
         system("cls");
-        cout << "Not found amazon flex app window!" << endl;
+        std::cout << "Not found amazon flex app window!" << std::endl;
         hWND = FindWindow(NULL, windowTitle);
         Sleep(100);
     }
-
+    const int refresh_x = width / 2;
+    const int refresh_y = height * 0.97;
+    const int swipe_x = width * 0.1;
+    const int swipe_y = height * 0.97;
+    const int end_swipe_x = swipe_x + width * 0.6;
+    const int end_of_screen = height * 0.8;
+    const int price_pos_x = width * 0.8522;
+    const int price_pos_y = height * 0.215;
     int yy = 0;
     while (true) {
         /*HWND temp = GetForegroundWindow();
@@ -340,7 +356,7 @@ void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlat
         if (GetKeyState(VK_RCONTROL)) {
             return;
         }
-        SetCursorPos(255, 1355);
+        SetCursorPos(refresh_x, refresh_y);
         mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
         mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
 
@@ -350,25 +366,24 @@ void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlat
         cv::cvtColor(target, target, cv::COLOR_BGR2HSV);
         // cv::imshow("AmazonFlex", background);
         float price = recogprice(background, matClassificationInts, matTrainingImagesAsFlattenedFloats);
-        if (price >= 150) { 
-            cout << price << endl;
+        if (price >= 140) { 
             POINT offer;
-            offer.x = 680;
-            offer.y = yy + 280;
-            cout << offer.x << " " << offer.y << endl;
+            offer.x = price_pos_x;
+            offer.y = yy + price_pos_y;
             SetCursorPos(offer.x, offer.y);
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
-            Sleep(100);
-            SetCursorPos(100, 1355);
-            mouse_event(MOUSEEVENTF_LEFTDOWN, 100, 1355, 0, 0);
-            Sleep(100);
-            SetCursorPos(455, 1355);
-            Sleep(100);
-            mouse_event(MOUSEEVENTF_LEFTUP, 455, 1355, 0, 0);
+            SetCursorPos(swipe_x, swipe_y);
+            Sleep(80);
+            mouse_event(MOUSEEVENTF_LEFTDOWN, swipe_x, swipe_y, 0, 0);
+            Sleep(90);
+            SetCursorPos(end_swipe_x, swipe_y);
+            Sleep(90);
+            mouse_event(MOUSEEVENTF_LEFTUP, end_swipe_x, swipe_y, 0, 0);
         }
+
         yy += 120;
-        if (yy > 1000) {
+        if (yy > end_of_screen) {
             yy = 0;
         }
     }
@@ -376,10 +391,6 @@ void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlat
 
 int main()
 {
-    /*string PATH = "C:/Users/shang/OneDrive/Desktop/UCSD Courses/CSE105/a.png";
-    cv::Mat image = cv::imread(PATH, cv::IMREAD_COLOR);
-    cv::imshow("img", image);
-    cv::waitKey(0);*/
     cv::Mat matClassificationInts;      // we will read the classification numbers into this variable as though it is a vector
     cv::FileStorage fsClassifications("classifications.xml", cv::FileStorage::READ);        // open the classifications file
 
@@ -404,6 +415,7 @@ int main()
 
     fsTrainingImages["images"] >> matTrainingImagesAsFlattenedFloats;           // read images section into Mat training images variable
     fsTrainingImages.release();                                                 // close the traning images file
+
 
     //train_model();
     readScreen(matClassificationInts, matTrainingImagesAsFlattenedFloats);
