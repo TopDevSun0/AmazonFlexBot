@@ -9,14 +9,12 @@
 #include <Windows.h>
 #include <vector>
 
-//using namespace std;
 
-
-
-// global variables ///////////////////////////////////////////////////////////////////////////////
+// global variables
 const int MIN_CONTOUR_AREA = 5;
 const int RESIZED_IMAGE_WIDTH = 20;
 const int RESIZED_IMAGE_HEIGHT = 30;
+const int MIN_PRICE = 130;
 
 void getMousePos() {
     POINT c;
@@ -164,15 +162,15 @@ public:
 
 };
 
-float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::Mat& matTrainingImagesAsFlattenedFloats) {
+float recogprice(cv::Mat matTestingNumbers, cv::Ptr<cv::ml::KNearest>  kNearest) {
     std::vector<ContourWithData> allContoursWithData;           // declare empty vectors,
     std::vector<ContourWithData> validContoursWithData;         // we will fill these shortly
 
-    cv::Ptr<cv::ml::KNearest>  kNearest(cv::ml::KNearest::create());            // instantiate the KNN object
+    //cv::Ptr<cv::ml::KNearest>  kNearest(cv::ml::KNearest::create());            // instantiate the KNN object
 
-                                                                                // finally we get to the call to train, note that both parameters have to be of type Mat (a single Mat)
-                                                                                // even though in reality they are multiple images / numbers
-    kNearest->train(matTrainingImagesAsFlattenedFloats, cv::ml::ROW_SAMPLE, matClassificationInts);
+    //                                                                            // finally we get to the call to train, note that both parameters have to be of type Mat (a single Mat)
+    //                                                                            // even though in reality they are multiple images / numbers
+    //kNearest->train(matTrainingImagesAsFlattenedFloats, cv::ml::ROW_SAMPLE, matClassificationInts);
 
     // cv::Mat matTestingNumbers = cv::imread("75.png");            // read in the test numbers image
     //if (matTestingNumbers.empty()) {                                // if unable to open image
@@ -202,12 +200,12 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
         3,                                   // size of a pixel neighborhood used to calculate threshold value
         2);                                   // constant subtracted from the mean or weighted mean
 
-    // matThreshCopy = matThresh.clone();              // make a copy of the thresh image, this in necessary b/c findContours modifies the image
+    matThreshCopy = matThresh.clone();              // make a copy of the thresh image, this in necessary b/c findContours modifies the image
 
     std::vector<std::vector<cv::Point> > ptContours;        // declare a vector for the contours
     std::vector<cv::Vec4i> v4iHierarchy;                    // declare a vector for the hierarchy (we won't use this in this program but this may be helpful for reference)
 
-    cv::findContours(matThresh,             // input image, make sure to use a copy since the function will modify this image in the course of finding contours
+    cv::findContours(matThreshCopy,             // input image, make sure to use a copy since the function will modify this image in the course of finding contours
         ptContours,                             // output contours
         v4iHierarchy,                           // output hierarchy
         cv::RETR_EXTERNAL,                      // retrieve the outermost contours only
@@ -231,15 +229,15 @@ float recogprice(cv::Mat matTestingNumbers, cv::Mat& matClassificationInts, cv::
 
     std::string strFinalString;         // declare final string, this will have the final number sequence by the end of the program
 
-    for (int i = 0; i < validContoursWithData.size(); i++) {            // for each contour
-
+    //for (int i = 0; i < validContoursWithData.size(); i++) {            // for each contour
+    for(const auto& i: validContoursWithData){
                                                                         // draw a green rect around the current char
         //cv::rectangle(matTestingNumbers,                            // draw rectangle on original image
         //    validContoursWithData[i].boundingRect,        // rect to draw
         //    cv::Scalar(0, 255, 0),                        // green
         //    1);                                           // thickness
 
-        cv::Mat matROI = matThresh(validContoursWithData[i].boundingRect);          // get ROI image of bounding rect
+        cv::Mat matROI = matThresh(i.boundingRect);          // get ROI image of bounding rect
 
         cv::Mat matROIResized;
         cv::resize(matROI, matROIResized, cv::Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));     // resize image, this will be more consistent for recognition and storage
@@ -324,7 +322,7 @@ cv::Mat getwindow(HWND hWND, int y) {
     return mat;
 }
 
-void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlattenedFloats) {
+void readScreen(cv::Ptr<cv::ml::KNearest>  kNearest) {
     LPCWSTR windowTitle = L"BlueStacks App Player";
     HWND hWND = FindWindow(NULL, windowTitle);
     RECT windowRect;
@@ -343,7 +341,7 @@ void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlat
     const int swipe_x = width * 0.1;
     const int swipe_y = height * 0.97;
     const int end_swipe_x = swipe_x + width * 0.6;
-    const int end_of_screen = height * 0.8;
+    const int end_of_screen = height * 0.8; // adjust to look num of offers.
     const int price_pos_x = width * 0.8522;
     const int price_pos_y = height * 0.215;
     int yy = 0;
@@ -365,8 +363,8 @@ void readScreen(cv::Mat &matClassificationInts, cv::Mat &matTrainingImagesAsFlat
         target.copyTo(background);
         cv::cvtColor(target, target, cv::COLOR_BGR2HSV);
         // cv::imshow("AmazonFlex", background);
-        float price = recogprice(background, matClassificationInts, matTrainingImagesAsFlattenedFloats);
-        if (price >= 140) { 
+        float price = recogprice(background, kNearest);
+        if (price >= MIN_PRICE) { 
             POINT offer;
             offer.x = price_pos_x;
             offer.y = yy + price_pos_y;
@@ -415,10 +413,14 @@ int main()
 
     fsTrainingImages["images"] >> matTrainingImagesAsFlattenedFloats;           // read images section into Mat training images variable
     fsTrainingImages.release();                                                 // close the traning images file
+    cv::Ptr<cv::ml::KNearest>  kNearest(cv::ml::KNearest::create());            // instantiate the KNN object
 
+                                                                                // finally we get to the call to train, note that both parameters have to be of type Mat (a single Mat)
+                                                                                // even though in reality they are multiple images / numbers
+    kNearest->train(matTrainingImagesAsFlattenedFloats, cv::ml::ROW_SAMPLE, matClassificationInts);
 
     //train_model();
-    readScreen(matClassificationInts, matTrainingImagesAsFlattenedFloats);
+    readScreen(kNearest);
 
     return 0;
 }

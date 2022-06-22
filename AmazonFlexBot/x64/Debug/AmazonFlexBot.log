@@ -1,19 +1,19 @@
 ﻿  AmazonFlexBot.cpp
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(220,50): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(303,85): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(303,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(342,34): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(342,25): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(343,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(343,23): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(344,32): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(344,23): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(345,37): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(218,50): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(301,85): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(301,61): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(340,34): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(340,25): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(341,31): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(341,23): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(342,32): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(342,23): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(343,37): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(343,27): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(344,38): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(344,29): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(345,35): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(345,27): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(346,38): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(346,29): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(347,35): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(347,27): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(348,36): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(348,27): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(346,36): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot\AmazonFlexBot.cpp(346,27): warning C4244: 'initializing': conversion from 'double' to 'const int', possible loss of data
   AmazonFlexBot.vcxproj -> C:\Users\shang\OneDrive\Desktop\c++\AmazonFlexBot\AmazonFlexBot\x64\Debug\AmazonFlexBot.exe
