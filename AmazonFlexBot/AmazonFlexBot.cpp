@@ -14,7 +14,8 @@
 const int MIN_CONTOUR_AREA = 5;
 const int RESIZED_IMAGE_WIDTH = 20;
 const int RESIZED_IMAGE_HEIGHT = 30;
-const int MIN_PRICE = 120;
+const int MIN_PRICE = 130;
+const float numBlocks = 0.7;
 
 void getMousePos() {
     POINT c;
@@ -273,7 +274,8 @@ float recogprice(cv::Mat matTestingNumbers, cv::Ptr<cv::ml::KNearest>  kNearest)
     //if (price > 150) {
     //    cout << "\n\ntarget price " << price << endl;
     //}
-    std::cout << "Price read = " << "$" << price << "\n\n";       // show the full string
+    
+    // std::cout << "Price read = " << "$" << price << "\n\n";       // show the full string
 
 
     //cv::imshow("matTestingNumbers", matTestingNumbers);     // show input image with green boxes drawn around found digits
@@ -341,7 +343,7 @@ void readScreen(cv::Ptr<cv::ml::KNearest>  kNearest) {
     const int swipe_x = width * 0.1;
     const int swipe_y = height * 0.97;
     const int end_swipe_x = swipe_x + width * 0.6;
-    const int end_of_screen = height * 0.5; // adjust to look num of offers.
+    const int end_of_screen = height * numBlocks; // adjust to look num of offers.
     const int price_pos_x = width * 0.8522;
     const int price_pos_y = height * 0.215;
     int yy = 0;
@@ -378,6 +380,7 @@ void readScreen(cv::Ptr<cv::ml::KNearest>  kNearest) {
             SetCursorPos(end_swipe_x, swipe_y);
             Sleep(70);
             mouse_event(MOUSEEVENTF_LEFTUP, end_swipe_x, swipe_y, 0, 0);
+            std::cout << "price match: " << price << "\n\n";
         }
 
         yy += 120;
@@ -420,6 +423,7 @@ int main()
     kNearest->train(matTrainingImagesAsFlattenedFloats, cv::ml::ROW_SAMPLE, matClassificationInts);
 
     //train_model();
+    std::cout << "started..... press right control to exit\n" << std::endl;
     readScreen(kNearest);
 
     return 0;
